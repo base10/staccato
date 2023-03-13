@@ -1,8 +1,15 @@
 module Staccato
   module Adapter
     class Validate
-      def initialize(adapter = Staccato.default_adapter)
-        @adapter = adapter.new URI('https://www.google-analytics.com/debug/collect')
+      def initialize(
+        adapter = Staccato.default_adapter,
+        validation_uri = universal_analytics_uri
+      )
+        @adapter = adapter.new validation_uri
+      end
+
+      def universal_analytics_uri
+        URI('https://www.google-analytics.com/debug/collect')
       end
 
       def post(params)
