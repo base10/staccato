@@ -18,7 +18,7 @@ module Staccato::V4
       measurement_id,
       api_secret,
       client_id = nil,
-      user_id = nil, 
+      user_id = nil,
       options = {}
     )
       @measurement_id = measurement_id
@@ -36,6 +36,12 @@ module Staccato::V4
 
     def add_adapter(adapter)
       @adapters << adapter
+    end
+
+    # The user id for GA
+    # @return [String, nil]
+    def user_id
+      @user_id
     end
 
     # The measurement id for GA
@@ -146,7 +152,12 @@ module Staccato::V4
     attr_accessor :hit_defaults
 
     # (see Tracker#initialize)
-    def initialize(measurement_id = nil, client_id = nil, options = {})
+    def initialize(
+      measurement_id = nil,
+      client_id = nil,
+      user_id = nil,
+      options = {}
+    )
       self.events = []
     end
 
@@ -156,6 +167,10 @@ module Staccato::V4
 
     def add_adapter(*)
       []
+    end
+
+    def user_id
+      nil
     end
 
     # (see Tracker#id)
