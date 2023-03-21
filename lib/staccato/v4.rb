@@ -37,9 +37,10 @@ module Staccato
     end
 
     # JSON encode in the case of GA measurement protocol V4
-    def self.encode_body(client_id, events)
+    def self.encode_body(client_id, user_id, events)
       JSON.generate({
         client_id: client_id,
+        user_id: user_id,
         events: events
       })
     end
