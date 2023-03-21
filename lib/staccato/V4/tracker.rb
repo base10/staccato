@@ -12,11 +12,19 @@ module Staccato::V4
     # @param measurement_id [String] the measurement id from GA
     # @param api_secret [String] the required api secret key
     # @param client_id [String, nil] unique value to track user sessions
+    # @param user_id [String, nil] unique value to track user
     # @param options [Hash]
-    def initialize(measurement_id, api_secret, client_id = nil, options = {})
+    def initialize(
+      measurement_id,
+      api_secret,
+      client_id = nil,
+      user_id = nil,
+      options = {}
+    )
       @measurement_id = measurement_id
       @api_secret = api_secret
       @client_id = client_id
+      @user_id = user_id
       @adapters = []
 
       self.events = []
@@ -28,6 +36,12 @@ module Staccato::V4
 
     def add_adapter(adapter)
       @adapters << adapter
+    end
+
+    # The user id for GA
+    # @return [String, nil]
+    def user_id
+      @user_id
     end
 
     # The measurement id for GA
@@ -98,7 +112,7 @@ module Staccato::V4
 
     # @private
     def body
-      Staccato::V4.encode_body(client_id, events)
+      Staccato::V4.encode_body(client_id, user_id, events)
     end
 
     # @private
@@ -138,7 +152,12 @@ module Staccato::V4
     attr_accessor :hit_defaults
 
     # (see Tracker#initialize)
-    def initialize(measurement_id = nil, client_id = nil, options = {})
+    def initialize(
+      measurement_id = nil,
+      client_id = nil,
+      user_id = nil,
+      options = {}
+    )
       self.events = []
     end
 
@@ -148,6 +167,10 @@ module Staccato::V4
 
     def add_adapter(*)
       []
+    end
+
+    def user_id
+      nil
     end
 
     # (see Tracker#id)
