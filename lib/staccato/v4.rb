@@ -5,7 +5,7 @@ module Staccato
     # Build a new tracker instance
     #   If the first argument is explicitly `nil`, a `NoopTracker` is returned
     #   which responds to all the same `tracker` methods but does no tracking
-    # 
+    #
     # @param measurement_id [String] the required id provided by google, i.e., `G-XXXXXXXX`
     # @param client_id [String, Integer, nil] a unique id to track the session of
     #   an individual user
@@ -37,11 +37,12 @@ module Staccato
     end
 
     # JSON encode in the case of GA measurement protocol V4
-    def self.encode_body(client_id, user_id, events)
+    def self.encode_body(client_id, user_id, events, timestamp_micros = nil)
       JSON.generate({
         client_id: client_id,
         user_id: user_id,
-        events: events
+        events: events,
+        timestamp_micros: timestamp_micros
       })
     end
   end

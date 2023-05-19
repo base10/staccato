@@ -3,7 +3,7 @@ require 'staccato/adapter/validate'
 module Staccato::V4
   # The `Tracker` class has methods to create all `Hit` types
   #   using the tracker and client id
-  # 
+  #
   # @author Tony Pitale
   class Tracker
     attr_accessor :events
@@ -19,12 +19,14 @@ module Staccato::V4
       api_secret,
       client_id = nil,
       user_id = nil,
+      timestamp_micros = nil,
       options = {}
     )
       @measurement_id = measurement_id
       @api_secret = api_secret
       @client_id = client_id
       @user_id = user_id
+      @timestamp_micros = timestamp_micros
       @adapters = []
 
       self.events = []
@@ -60,6 +62,12 @@ module Staccato::V4
     # @return [String]
     def client_id
       @client_id ||= Staccato.build_client_id
+    end
+
+    # The time to associate with the event, as a Unix timestamp in
+    # microseconds.
+    def timestamp_micros
+      @timestamp_micros
     end
 
     # Add an Event instance to the events to be sent
@@ -112,7 +120,7 @@ module Staccato::V4
 
     # @private
     def body
-      Staccato::V4.encode_body(client_id, user_id, events)
+      Staccato::V4.encode_body(client_id, user_id, events, timestamp_micros)
     end
 
     # @private
@@ -156,6 +164,7 @@ module Staccato::V4
       measurement_id = nil,
       client_id = nil,
       user_id = nil,
+      timestamp_micros = nil,
       options = {}
     )
       self.events = []
@@ -170,6 +179,10 @@ module Staccato::V4
     end
 
     def user_id
+      nil
+    end
+
+    def timestamp_micros
       nil
     end
 
