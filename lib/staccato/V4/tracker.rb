@@ -81,10 +81,14 @@ module Staccato::V4
     end
 
     # dynamically define methods for events
-    Staccato::V4::Event.events.each do |event_name, event_klass|
+    def self.define_event(event_name, event_klass)
       define_method event_name do |options|
         add(event_name, options)
       end
+    end
+
+    Staccato::V4::Event.events.each do |event_name, event_klass|
+      define_event(event_name, event_klass)
     end
 
     # post the hit to GA collection endpoint
